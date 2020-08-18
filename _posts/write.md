@@ -2,8 +2,8 @@
 title: Writing a New Post
 author: Cotes Chung
 date: 2019-08-08 14:10:00 +0800
-categories: [Blogging, Tutorial]
-tags: [writing]
+categories: []
+tags: []
 ---
 
 ## Naming and Path
@@ -47,10 +47,10 @@ Then we should have two _category_ type pages placed in folder `categories` of r
 ```sh
 .
 ├── categories
-│   ├── animal.html         # a category type page
-│   └── insect.html
+│   ├── animal.html         # a category type page
+│   └── insect.html
 ├── tags
-│   └── bee.html            # a tag type page
+│   └── bee.html            # a tag type page
 ...
 ```
     
@@ -175,4 +175,3 @@ If you want to display the **Liquid** snippet, surround the liquid code with `{%
 ## Learn More
 
 For more knowledge about Jekyll posts, visit the [Jekyll Docs: Posts](https://jekyllrb.com/docs/posts/).
-
