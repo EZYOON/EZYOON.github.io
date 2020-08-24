@@ -1,0 +1,46 @@
+I"�<h2 id="github-블로그-개발환경을-세팅하기">Github 블로그 개발환경을 세팅하기</h2>
+<hr />
+<p><br />
+이전까지는 posting 을 하면서 변경사항이 생길 때 마다 git에 push 후 웹사이트로 확인하는 방식을 사용했다</p>
+
+<p>아주 작은 수정도 commit 해야하고, 변동사항을 바로바로 확인할 수 없어 굉장히 불편하다</p>
+
+<p>jekyll bundler 를 설치하게되면 commit, push 없이도 수정된 github.io repository를 localhost:4000 에서  확인할 수 있다!!</p>
+
+<p>너무너무 편해지니 꼭 설치하는 것을 추천한다</p>
+
+<p>2020-08-25 기준 mac에서 jekyll bundler 를 설치하는 과정을 남기려 한다</p>
+
+<p><br />
+<br /></p>
+<h2 id="ruby-설치하기">Ruby 설치하기</h2>
+<hr />
+
+<table>
+  <tbody>
+    <tr>
+      <td>![Desktop View]({{ “/assets/img/sample/20200825-1.png”</td>
+      <td>relative_url }})</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><a href="https://rubygems.org/pages/download">https://rubygems.org/pages/download</a></p>
+
+<p>mac은 tgz 파일을 받는다
+압축을 푼 후 command 창에서 해당 directory로 이동한다</p>
+
+<blockquote>
+  <p>cd [압축푼 파일]</p>
+</blockquote>
+
+<blockquote>
+  <p>sudo ruby setup.rb</p>
+</blockquote>
+
+<p>로 ruby를 설치하려 했으나 아래와 같은 error가 발생했다..</p>
+
+<h2 id="jekyll-bundler-설치하기">jekyll bundler 설치하기</h2>
+<hr />
+
+:ET

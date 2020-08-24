@@ -1,0 +1,244 @@
+I"�0<h2 id="github-블로그-개발환경을-세팅하기">Github 블로그 개발환경을 세팅하기</h2>
+<hr />
+<p>2020-08-25<br />
+mac에서 jekyll bundler 를 설치하는 과정을 남기려 한다</p>
+
+<p><br />
+이전까지는 posting 을 하면서 변경사항이 생길 때 마다 git에 push 후 웹사이트로 확인하는 방식을 사용했다</p>
+
+<p>아주 작은 수정도 commit 해야하고, 변동사항을 바로바로 확인할 수 없어 굉장히 불편했다</p>
+
+<p>jekyll bundler 를 설치하게되면 commit, push 없이도 수정된 github.io repository를 localhost:4000 에서  확인할 수 있다!!</p>
+
+<p>너무너무 편해지니 꼭 설치하는 것을 추천한다</p>
+
+<p><br />
+<br /></p>
+
+<h2 id="ruby-설치하기">Ruby 설치하기</h2>
+<hr />
+
+<p><img src="/assets/img/sample/20200825-1.png" alt="Desktop View" /></p>
+
+<p><a href="https://rubygems.org/pages/download">https://rubygems.org/pages/download</a></p>
+
+<p>mac은 tgz 파일을 받는다
+압축을 푼 후 command 창에서 해당 directory로 이동한다</p>
+
+<p>아래 코드로 ruby를 설치하려 했으나 다음과 같은 error가 발생했다..</p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="go">cd [압축푼 파일]
+sudo ruby setup.rb
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="go">ERROR:  While executing gem ... (Errno::EPERM)
+    Operation not permitted @ rb_sysopen - /System/Library/Frameworks/Ruby.framework/Versions/2.6/usr/bin/gem
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>이는 시스템 ruby를 이용하고 있기 때문에 권한이 없어 gem 설치가 안된 것이다</p>
+
+<p>sudo를 통해 root 권한으로 실행하면 설치가 가능하지만, 보안상 이유로 권장하지 않는 설치법이라고 하니 rbenv를 통해 문제를 해결해보았다.</p>
+
+<h3 id="rbenv-설치">rbenv 설치</h3>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="gp"> EZYOON 🌙 ~/desktop &gt;</span><span class="w"> </span>brew update
+<span class="gp"> EZYOON 🌙 ~/desktop &gt;</span><span class="w"> </span>brew <span class="nb">install </span>rbenv ruby-build
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="rbenv이-잘-설치되었는지-확인">rbenv이 잘 설치되었는지 확인</h3>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="gp"> EZYOON 🌙 ~/desktop &gt;</span><span class="w"> </span>rbenv versions
+<span class="go">* system (set by /Users/leejiyun/.rbenv/version)
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="rbenv로-ruby-설치">rbenv로 Ruby 설치</h3>
+<p>설치가능한 Ruby의 버전이 나온다</p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="rouge-code"><pre><span class="gp"> EZYOON 🌙 ~/desktop &gt;</span><span class="w"> </span>rbenv <span class="nb">install</span> <span class="nt">-l</span>
+<span class="go">2.5.8
+2.6.6
+2.7.1
+jruby-9.2.13.0
+maglev-1.0.0
+mruby-2.1.2
+rbx-5.0
+truffleruby-20.2.0
+truffleruby+graalvm-20.2.0
+
+Only latest stable releases for each Ruby implementation are shown.
+Use 'rbenv install --list-all' to show all local versions.
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+<p>나는 가장 최신 버전인 2.7.1을 설치하였다</p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="rouge-code"><pre><span class="gp"> EZYOON 🌙 ~/desktop &gt;</span><span class="w"> </span>rbenv <span class="nb">install </span>2.7.1
+<span class="go">Downloading openssl-1.1.1g.tar.gz...
+</span><span class="gp">-&gt;</span><span class="w"> </span>https://dqw8nmjcqpjn7.cloudfront.net/ddb04774f1e32f0c49751e21b67216ac87852ceb056b75209af2443400636d46
+<span class="go">Installing openssl-1.1.1g...
+Installed openssl-1.1.1g to /Users/leejiyun/.rbenv/versions/2.7.1
+
+Downloading ruby-2.7.1.tar.bz2...
+</span><span class="gp">-&gt;</span><span class="w"> </span>https://cache.ruby-lang.org/pub/ruby/2.7/ruby-2.7.1.tar.bz2
+<span class="go">Installing ruby-2.7.1...
+ruby-build: using readline from homebrew
+Installed ruby-2.7.1 to /Users/leejiyun/.rbenv/versions/2.7.1
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="rbenv로-글로벌-버전을-system에서-271로-변경한다">rbenv로 글로벌 버전을 system에서 2.7.1로 변경한다</h3>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="gp"> EZYOON 🌙 ~/desktop &gt;</span><span class="w"> </span>rbenv versions
+<span class="go">* system (set by /Users/leejiyun/.rbenv/version)
+  2.7.1
+</span><span class="gp"> EZYOON 🌙 ~/desktop &gt;</span><span class="w"> </span>rbenv global 2.7.1
+<span class="gp"> EZYOON 🌙 ~/desktop &gt;</span><span class="w"> </span>rbenv versions 
+<span class="go">   system
+* 2.7.1 (set by /Users/leejiyun/.rbenv/version)
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="rbenv-path를-추가해보자">rbenv PATH를 추가해보자</h3>
+<p>나는 zsh 쉘을 사용하기 때문에 zshrc 파일에 경로를 추가했다</p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="gp"> EZYOON 🌙 ~/desktop &gt;</span><span class="w"> </span>vim ~/.zshrc
+</pre></td></tr></tbody></table></code></pre></div></div>
+<p>i 누른 후 아래 코드를 command+c, command+v 한 후 :wq 로 나가기</p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="gp">[[ -d ~/.rbenv  ]] &amp;&amp; \
+  export PATH=$</span><span class="o">{</span>HOME<span class="o">}</span>/.rbenv/bin:<span class="k">${</span><span class="nv">PATH</span><span class="k">}</span> <span class="o">&amp;&amp;</span> <span class="se">\</span>
+  <span class="nb">eval</span> <span class="s2">"</span><span class="si">$(</span>rbenv init -<span class="si">)</span><span class="s2">"</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+<p>변경한 경로 적용</p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="gp"> EZYOON 🌙 ~/desktop &gt;</span><span class="w"> </span><span class="nb">source</span> ~/.zshrc
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="ruby-설치-확인">Ruby 설치 확인</h3>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="gp"> EZYOON 🌙 ~/desktop &gt;</span><span class="w"> </span>ruby <span class="nt">--version</span>
+<span class="go"> ruby 2.7.1p83 (2020-03-31 revision a0c7c23c9c) [x86_64-darwin19]
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="jekyll-bundler-설치하기">jekyll bundler 설치하기</h2>
+<hr />
+
+<h3 id="jekyll-bundler-설치">jekyll bundler 설치</h3>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="gp"> EZYOON 🌙 ~/desktop &gt;</span><span class="w"> </span><span class="nb">cd</span> <span class="o">[</span>github.io 레파지토리]
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="gp"> EZYOON 🌙 ~/desktop &gt;</span><span class="w"> </span>gem <span class="nb">install </span>jekyll bundler
+<span class="c"> ...
+</span><span class="go"> Successfully installed bundler-2.1.4
+ Parsing documentation for bundler-2.1.4
+ Installing ri documentation for bundler-2.1.4
+ Done installing documentation for bundler after 2 seconds
+ 27 gems installed
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="gp"> EZYOON 🌙 ~/desktop &gt;</span><span class="w"> </span>gem <span class="nb">install </span>bundler:1.17.2
+<span class="c"> ...
+</span><span class="go"> Fetching bundler-1.17.2.gem
+ Successfully installed bundler-1.17.2
+ Parsing documentation for bundler-1.17.2
+ Installing ri documentation for bundler-1.17.2
+ Done installing documentation for bundler after 1 seconds
+ 1 gem installed
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="gp"> EZYOON 🌙 ~/desktop &gt;</span><span class="w"> </span>bundle <span class="nb">install</span>
+<span class="c"> ...
+</span><span class="go"> Fetching jekyll-redirect-from 0.16.0
+ Installing jekyll-redirect-from 0.16.0
+ Fetching jekyll-seo-tag 2.6.1
+ Installing jekyll-seo-tag 2.6.1
+ Bundle complete! 5 Gemfile dependencies, 40 gems now installed.
+ Use `bundle info [gemname]` to see where a bundled gem is installed.
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="jekyll-bundler-실행">jekyll bundler 실행</h3>
+<hr />
+<p>설치가 모두 끝났다 😎 
+이제 localhost에서 내 블로그를 확인해보자!!</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="rouge-code"><pre><span class="gp"> EZYOON 🌙 ~/desktop &gt;</span><span class="w"> </span>bundle <span class="nb">exec </span>jekyll serve
+<span class="go"> Configuration file: /Users/leejiyun/ezyoon.github.io/_config.yml
+            Source: /Users/leejiyun/ezyoon.github.io
+       Destination: /Users/leejiyun/ezyoon.github.io/_site
+ Incremental build: disabled. Enable with --incremental
+      Generating... 
+                    done in 0.675 seconds.
+ Auto-regeneration: enabled for '/Users/leejiyun/ezyoon.github.io'
+    Server address: http://127.0.0.1:4000/
+  Server running... press ctrl-c to stop.
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>이제 http://localhost:4000 에서 블로그를 확인할 수 있다<br />
+blogging 후 ctrl-c를 누르면 실행을 중지시킬 수 있다</p>
+
+:ET
